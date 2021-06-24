@@ -10,6 +10,8 @@ var authenticate = require('./authenticate');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var categoriesRouter = require('./routes/categories');
+var foodCategoriesRouter = require('./routes/foodCategories');
+var MenuRouter = require('./routes/menues');
 
 var config = require('./config');
 const url = config.mongoUrl;
@@ -37,6 +39,8 @@ app.use(passport.initialize());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/categories',categoriesRouter);
+app.use('/foodCategories',foodCategoriesRouter);
+app.use('/menues',MenuRouter);
 
 
 
