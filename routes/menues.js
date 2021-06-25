@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 var authenticate = require('../authenticate');
 
 
-const Menues = require('../models/Menu');
-const menu = require('../models/Menu');
+const Menu = require('../models/menu');
+
 
 const MenuRouter = express.Router();
 
@@ -13,7 +13,7 @@ MenuRouter.use(bodyParser.json());
 
 MenuRouter.route('/')
 .get(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => {
-    Menues.find(req.query)
+    Menu.find(req.query)
     .populate('foodCategory')
     .then((menu) => {
         res.statusCode = 200;
@@ -25,9 +25,9 @@ MenuRouter.route('/')
 .post( authenticate.verifyUser, authenticate.verifyAdmin ,(req, res, next) => {
     if (req.body != null) {
         // req.body.author = req.user._id;
-        Menues.create(req.body)
+        Menu.create(req.body)
         .then((menu) => {
-            Menues.findById(menu._id)
+            Menu.findById(menu._id)
             .populate('foodCategory')
             .then((menu) => {
                 res.statusCode = 200;
@@ -49,7 +49,7 @@ MenuRouter.route('/')
     res.end('PUT operation not supported on /comments/');
 })
 .delete( authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    Menues.remove({})
+    Menu.remove({})
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -61,7 +61,7 @@ MenuRouter.route('/')
 MenuRouter.route('/:menuId')
 .options(authenticate.verifyAdmin,authenticate.verifyAdmin, (req, res) => { res.sendStatus(200); })
 .get( (req,res,next) => {
-    Menues.findById(req.params.menuId)
+    Menu.findById(req.params.menuId)
     .populate('foodCategory')
     .then((menu) => {
         res.statusCode = 200;
@@ -75,14 +75,14 @@ MenuRouter.route('/:menuId')
     res.end('POST operation not supported on /comments/'+ req.params.commentId);
 })
 .put(authenticate.verifyUser,authenticate.verifyAdmin ,(req, res, next) => {
-    Menues.findById(req.params.menuId)
+    Menu.findById(req.params.menuId)
     .then((menu) => {
         if (menu != null) {
             Menues.findByIdAndUpdate(req.params.menuId, {
                 $set: req.body
             }, { new: true })
             .then((menu) => {
-                Menues.findById(menu._id)
+                Menu.findById(menu._id)
                 .populate('foodCategory')
                 .then((menu) => {
                     res.statusCode = 200;
@@ -100,10 +100,10 @@ MenuRouter.route('/:menuId')
     .catch((err) => next(err));
 })
 .delete( authenticate.verifyUser, authenticate.verifyAdmin,(req, res, next) => {
-    Menues.findById(req.params.menuId)
+    Menu.findById(req.params.menuId)
     .then((menu) => {
         if (menu != null) {
-            Menues.findByIdAndRemove(req.params.menuId)
+            Menu.findByIdAndRemove(req.params.menuId)
             .then((resp) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');

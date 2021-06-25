@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 var categoriesRouter = require('./routes/categories');
 var foodCategoriesRouter = require('./routes/foodCategories');
 var MenuRouter = require('./routes/menues');
+var RestaurantsRouter = require('./routes/restaurants');
 
 var config = require('./config');
 const url = config.mongoUrl;
@@ -41,6 +42,7 @@ app.use('/users', usersRouter);
 app.use('/categories',categoriesRouter);
 app.use('/foodCategories',foodCategoriesRouter);
 app.use('/menues',MenuRouter);
+app.use('/restaurants',RestaurantsRouter);
 
 
 
