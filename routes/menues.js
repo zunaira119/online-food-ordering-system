@@ -2,17 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 var authenticate = require('../authenticate');
-
-
 const Menu = require('../models/menu');
-
-
 const MenuRouter = express.Router();
-
 MenuRouter.use(bodyParser.json());
 
 MenuRouter.route('/')
-.get(authenticate.verifyUser,authenticate.verifyAdmin, (req,res,next) => {
+.get( (req,res,next) => {
     Menu.find(req.query)
     .populate('foodCategory')
     .then((menu) => {
@@ -24,7 +19,6 @@ MenuRouter.route('/')
 })
 .post( authenticate.verifyUser, authenticate.verifyAdmin ,(req, res, next) => {
     if (req.body != null) {
-        // req.body.author = req.user._id;
         Menu.create(req.body)
         .then((menu) => {
             Menu.findById(menu._id)
